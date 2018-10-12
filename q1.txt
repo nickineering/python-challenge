@@ -1,0 +1,3 @@
+Numerous third party packages exist to extend Django. They are likely far more advanced than anything that would be
+realistic to produce in house with our other priorities. Depending on the nature of the project I would pick a package
+from this list: https://djangopackages.org/grids/g/model-audit/
