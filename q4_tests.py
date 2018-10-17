@@ -41,6 +41,12 @@ class TestCrawlLinks(TestCase):
     def test_image_found(self):
         self.assertIn(test_image, self.data[test_search_url]["images"])
 
+    def test_correct_num_links_found(self):
+        self.assertEqual(1, len(self.data[test_search_url]["links"]))
+
+    def test_correct_num_images_found(self):
+        self.assertEqual(1, len(self.data[test_search_url]["images"]))
+
 
 if __name__ == '__main__':
     unittest.main()
