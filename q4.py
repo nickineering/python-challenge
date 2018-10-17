@@ -35,22 +35,38 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+headers = {
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko)'
+                  'Chrome/53.0.2785.143 Safari/537.36'
+}
+
 
 def crawl_links(urls):
+    if not isinstance(urls, list):
+        urls = [urls]
     results = {}
     for url in urls:
         results[url] = {'links': [], 'images': [], 'errors': []}
+
         try:
-            page = requests.get(url)
-            soup = BeautifulSoup(page.text, 'html.parser')
-
-            for link in soup.find_all('a'):
-                results[url]['links'].append(link.get('href'))
-            for image in soup.find_all('img'):
-                results[url]['images'].append(image.get('src'))
-
+            page = requests.get(url, headers=headers, timeout=5)
         except requests.exceptions.RequestException as e:
-            results[url]['errors'] = [str(e)]
+            results[url]['errors'].append([str(e)])
+            return results
+        except KeyboardInterrupt:
+            results[url]['errors'].append("Keyboard interrupt exception")
+            return results
+
+        if page.status_code != 200:
+            results[url]['errors'].append("HTTP status " + page.status_code)
+            return results
+
+        soup = BeautifulSoup(page.text, 'html.parser')
+
+        for link in soup.find_all('a'):
+            results[url]['links'].append(link.get('href'))
+        for image in soup.find_all('img'):
+            results[url]['images'].append(image.get('src'))
 
     return results
 
