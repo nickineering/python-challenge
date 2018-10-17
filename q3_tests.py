@@ -1,3 +1,6 @@
+"""
+Tests question 3.
+"""
 from unittest import TestCase
 import unittest
 from q3 import data

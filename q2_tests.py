@@ -1,3 +1,6 @@
+"""
+Tests question 2
+"""
 from unittest import TestCase
 import unittest
 from q2 import to_list
